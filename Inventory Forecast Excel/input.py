@@ -17,7 +17,6 @@ def getSKUnit():
     
     if source == "excel":
         
-        
         filename = input("Enter Excel filename (press Enter to get default: Sales_Excel.xlsx): ")
         if filename == "":
             filename = "Sales_Excel.xlsx"
@@ -111,4 +110,5 @@ while (True):
         print("\n\n")
     else:
         print("Invalid input. Try again. \n")
+
 
