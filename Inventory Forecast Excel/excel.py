@@ -7,9 +7,6 @@ import os
 import re
 
 def get_latest_sheet_name(xls_file):
-    """
-    Returns the sheet name representing the most recent year.
-    """
     sheets = xls_file.sheet_names
     try:
         sorted_sheets = sorted(sheets, key=lambda x: int(x), reverse=True)
@@ -18,10 +15,6 @@ def get_latest_sheet_name(xls_file):
         return sheets[-1]
 
 def find_column(df, keywords):
-    """
-    Helper function to find a column that matches one of the keywords.
-    Case-insensitive partial match.
-    """
     clean_cols = [str(c).strip().lower() for c in df.columns]
     
     for keyword in keywords:
@@ -31,10 +24,6 @@ def find_column(df, keywords):
     return None
 
 def get_forecast_data(sku, location, filename="Sales_Excel.xlsx"):
-    """
-    Reads the Excel file, finds the latest year, handles duplicates 
-    by picking the row with the HIGHEST TOTAL SALES.
-    """
     if not os.path.exists(filename):
         csv_name = filename + " - 2025.csv"
         if os.path.exists(csv_name):
@@ -127,4 +116,5 @@ def get_forecast_data(sku, location, filename="Sales_Excel.xlsx"):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         return None
+
 
