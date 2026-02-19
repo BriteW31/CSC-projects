@@ -25,7 +25,7 @@ def find_column(df, keywords):
 
 def get_forecast_data(sku, location, filename="Sales_Excel.xlsx"):
     if not os.path.exists(filename):
-        csv_name = filename + " - 2025.csv"
+        csv_name = filename + " - year.csv"
         if os.path.exists(csv_name):
             filename = csv_name
             is_csv = True
@@ -116,5 +116,6 @@ def get_forecast_data(sku, location, filename="Sales_Excel.xlsx"):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         return None
+
 
 
