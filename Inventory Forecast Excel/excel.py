@@ -56,6 +56,9 @@ def get_forecast_data(sku, location, filename="Sales_Excel.xlsx"):
             latest_sheet = get_latest_sheet_name(xls)
             print(f"Loading forecast from sheet: {latest_sheet}...")
             df = pd.read_excel(xls, sheet_name=latest_sheet)
+
+        # Minimize NaN error by filling in blanks as 0's
+        df = df.fillna(0)
         
         # 1. Identify Key Columns dynamically
         col_sku = find_column(df, ['sku', 'item', 'item sku'])
@@ -124,3 +127,4 @@ def get_forecast_data(sku, location, filename="Sales_Excel.xlsx"):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         return None
+
