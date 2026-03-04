@@ -7,3 +7,5 @@ Global Server install: npm install -g http-server
 Run app: http-server -c-1 dist/my-pwa-app
 
 Note: the Excel file input is slightly less strict compared to Python. You can factor in additional headers (up to 10 headers). Additionally, so long as one sheet contains the latest year number, you can use any name for your sheets.
+
+An example Excel file has been added.
