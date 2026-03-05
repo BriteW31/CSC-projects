@@ -3,27 +3,26 @@ import { CSC } from '../models/csc.models';
 import { DataProcessor, CsvRow } from '../utils/data-processor.utils';
 
 @Injectable({
-  providedIn: 'root' // This makes the service available everywhere in your app
+  providedIn: 'root'
 })
 export class InventoryService {
 
   constructor() { }
-
   /**
    * Takes raw CSV data from the user interface, processes it, 
    * and returns a fully calculated CSC Model.
    */
   generateForecast(csvData: CsvRow[], sku: string, location: string, leadTimes: number[], targetRate: number): CSC | null {
     
-    // 1. Find the specific row for this SKU/Location
+    // Find the specific row for this SKU/Location
     const itemData = DataProcessor.getForecastData(csvData, sku, location);
     
     if (!itemData) {
-      console.error('Item not found in CSV data.');
+      console.error('Item not found in XLSX data.');
       return null; 
     }
 
-    // 2. Create and return the instantiated CSC class
+    // Create and return CSC class
     return new CSC(
       itemData['jan'] || 0, itemData['feb'] || 0, itemData['mar'] || 0, itemData['apr'] || 0,
       itemData['may'] || 0, itemData['jun'] || 0, itemData['jul'] || 0, itemData['aug'] || 0,
@@ -32,3 +31,4 @@ export class InventoryService {
     );
   }
 }
+
