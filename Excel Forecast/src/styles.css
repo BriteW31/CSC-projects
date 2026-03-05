@@ -3,11 +3,12 @@ body, html {
   margin: 0;
   padding: 0;
   height: 100%;
-  background-color: #f3f2f1; /* Microsoft's standard light gray background */
+  background-color: #f3f2f1; 
   font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
-  color: #323130; /* Soft black for better readability */
+  color: #323130; 
 }
 
 * {
   box-sizing: border-box;
+
 }
