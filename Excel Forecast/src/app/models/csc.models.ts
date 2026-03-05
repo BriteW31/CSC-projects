@@ -151,7 +151,7 @@ export class CSC {
     const reorder = this.getReorderQuantity();
     const quantity: { [key: number]: number } = {};
     
-    // Create a Set to remove duplicates, then iterate
+    // Remove duplicates, then iterate
     const uniqueLeadTimes = Array.from(new Set(this.leadTimes));
     
     uniqueLeadTimes.forEach(lead => {
@@ -164,3 +164,4 @@ export class CSC {
     return quantity;
   }
 }
+
