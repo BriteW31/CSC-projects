@@ -18,7 +18,7 @@ export class DashboardComponent {
   location: string = '';
   targetServiceRate: number = 98;
   
-  // We'll let users type "10, 12, 15..." instead of asking 10 separate times
+  // Let users type "10, 12, 15..." instead of asking 10 separate times
   leadTimeInput: string = ''; 
   
   csvData: any[] = [];
@@ -133,7 +133,7 @@ export class DashboardComponent {
              continue;
           }
 
-          // Build a perfectly formatted object for our DataProcessor
+          // Build a perfectly formatted object for our data processor
           const obj: any = {};
           obj['sku'] = cellSku;
           if (locIdx !== -1 && locIdx < row.length) obj['location'] = row[locIdx];
@@ -159,7 +159,7 @@ export class DashboardComponent {
     reader.readAsArrayBuffer(file);
   }
 
-  // Run Calculations (Replaces the main execution loop)
+  // Run calculations
   calculate() {
     this.forecastHistory = [];
     this.errorMessage = '';
@@ -214,7 +214,7 @@ export class DashboardComponent {
     const headerRow: any = {};
     allHeaders.forEach(key => headerRow[key] = '');
 
-    // Identify the keys (using the same logic as your DataProcessor)
+    // Identify the keys (using the same logic as your data processor)
     const skuKey = this.findKey(headerRow, ['sku', 'item', 'item sku']);
     const locKey = this.findKey(headerRow, ['location', 'loc', 'warehouse']);
 
@@ -313,4 +313,5 @@ export class DashboardComponent {
     XLSX.writeFile(workbook, 'Inventory_Forecast_Multiple.xlsx');
   }
 }
+
 
