@@ -8,7 +8,7 @@
   <div class="input-card">
     <div class="form-group">
       <label>1. Upload Sales Data (xlsx)</label>
-      <input type="file" (change)="onFileUpload($event)" accept=".xlsx, .xls">
+      <input type="file" #fileInput (change)="onFileUpload($event)" accept=".xlsx, .xls">
       <small *ngIf="parsedFileName" class="success-text">Loaded: {{ parsedFileName }}</small>
     </div>
 
@@ -43,3 +43,4 @@
       📊 Download to Excel (.xlsx)
   </button>
 </div>
+
