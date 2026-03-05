@@ -136,8 +136,13 @@ export class DashboardComponent {
             !cellSku 
             || cellSku.toLowerCase() === 'sku' 
             || cellSku.toLowerCase() === 'item'
+            || cellSku.toLowerCase() === 'location'
+            || cellSku.toLowerCase() === 'month'
             || cellSku.toLowerCase().includes('monthyear')
             || cellSku.toLowerCase().includes('annual sales')
+            || cellSku.toLowerCase().includes('sku')
+            || cellSku.toLowerCase().includes('item')
+            || cellSku.toLowerCase().includes('location')
           ) {
              continue;
           }
@@ -327,6 +332,7 @@ export class DashboardComponent {
     XLSX.writeFile(workbook, 'Inventory_Forecast_Multiple.xlsx');
   }
 }
+
 
 
 
