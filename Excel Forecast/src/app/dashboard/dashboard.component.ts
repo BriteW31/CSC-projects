@@ -32,7 +32,7 @@ export class DashboardComponent {
 
   constructor(private inventoryService: InventoryService) {}
 
-  // 1. Handle File Upload (Replaces excel.py loading)
+  // Handle File Upload (Replaces excel.py loading)
   onFileUpload(event: any) {
     this.errorMessage = '';
     const target: DataTransfer = <DataTransfer>(event.target);
@@ -56,7 +56,7 @@ export class DashboardComponent {
         const sheetNames = workbook.SheetNames;
         let targetSheetName = sheetNames[0];
 
-        // 1. Map through sheets and attempt to extract a 4-digit year
+        // Map through sheets and attempt to extract a 4-digit year
         const sheetsWithYears = sheetNames
           .map(name => {
             // Regex to find any 4-digit sequence (e.g., '2025' inside 'Year 2025 Final')
@@ -66,10 +66,10 @@ export class DashboardComponent {
               year: match ? parseInt(match[0], 10) : null
             };
           })
-          .filter(sheet => sheet.year !== null) // 2. Throw out sheets with no year
-          .sort((a, b) => b.year! - a.year!);   // 3. Sort descending (highest year first)
+          .filter(sheet => sheet.year !== null) // Throw out sheets with no year
+          .sort((a, b) => b.year! - a.year!);   // Sort descending (highest year first)
 
-        // 4. Pick the winner or use the fallback
+        // Pick the winner or use the fallback
         if (sheetsWithYears.length > 0) {
           targetSheetName = sheetsWithYears[0].originalName;
           console.log(`Extracted year ${sheetsWithYears[0].year} from sheet "${targetSheetName}"`);
@@ -80,13 +80,13 @@ export class DashboardComponent {
 
         const worksheet: XLSX.WorkSheet = workbook.Sheets[targetSheetName];
         
-        // FIX: Load the sheet as a 2D Array of strings, instead of objects. 
+        // Load the sheet as a 2D Array of strings, instead of objects. 
         // This bypasses the multi-line header issue completely.
         const rawData: any[][] = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: "" });
         
         if (rawData.length === 0) throw new Error("File is empty.");
 
-        // Utility: Scans the first 10 rows to find which column index holds a keyword
+        // Scans the first 10 rows to find which column index holds a keyword
         const findColIdx = (keywords: string[]) => {
           for (let r = 0; r < Math.min(10, rawData.length); r++) {
             if (!rawData[r]) continue;
@@ -94,15 +94,15 @@ export class DashboardComponent {
               const cellVal = String(rawData[r][c]).trim().toLowerCase();
               for (const kw of keywords) {
                 if (cellVal === kw || (kw.length > 2 && cellVal.includes(kw))) {
-                  return c; // We found the column number!
+                  return c; 
                 }
               }
             }
           }
-          return -1; // Keyword not found
+          return -1; 
         };
 
-        // 1. Locate the exact column number for every required field
+        // Locate the exact column number for every required field
         const skuIdx = findColIdx(['sku', 'item', 'item sku']);
         const locIdx = findColIdx(['location', 'loc', 'warehouse']);
         const srvIdx = findColIdx(['srv', 'service', 'van']);
@@ -118,7 +118,7 @@ export class DashboardComponent {
           return;
         }
 
-        // 2. Loop through the raw data and build clean objects
+        // Loop through the raw data and build clean objects
         const cleanedData: any[] = [];
         
         for (let i = 0; i < rawData.length; i++) {
@@ -159,7 +159,7 @@ export class DashboardComponent {
     reader.readAsArrayBuffer(file);
   }
 
-  // 2. Run Calculations (Replaces the main execution loop)
+  // Run Calculations (Replaces the main execution loop)
   calculate() {
     this.forecastHistory = [];
     this.errorMessage = '';
@@ -208,13 +208,13 @@ export class DashboardComponent {
   }
 
   processAllSkus(leadTimes: number[]) {
-    // 1. Gather all headers to dynamically find the SKU and Location columns
+    // Gather all headers to dynamically find the SKU and Location columns
     const allHeaders = new Set<string>();
     this.csvData.forEach(row => Object.keys(row).forEach(key => allHeaders.add(key)));
     const headerRow: any = {};
     allHeaders.forEach(key => headerRow[key] = '');
 
-    // 2. Identify the keys (using the same logic as your DataProcessor)
+    // Identify the keys (using the same logic as your DataProcessor)
     const skuKey = this.findKey(headerRow, ['sku', 'item', 'item sku']);
     const locKey = this.findKey(headerRow, ['location', 'loc', 'warehouse']);
 
@@ -223,21 +223,21 @@ export class DashboardComponent {
       return;
     }
 
-    // 3. Extract unique SKU + Location pairs
+    // Extract unique SKU + Location pairs
     const uniqueItems = new Map<string, { sku: string, loc: string }>();
     this.csvData.forEach(row => {
       const rowSku = row[skuKey] ? String(row[skuKey]).trim() : '';
       const rowLoc = (locKey && row[locKey]) ? String(row[locKey]).trim() : '';
       
       if (rowSku) {
-        const uniqueKey = `${rowSku}_${rowLoc}`; // Combine them to ensure uniqueness
+        const uniqueKey = `${rowSku}_${rowLoc}`;
         if (!uniqueItems.has(uniqueKey)) {
           uniqueItems.set(uniqueKey, { sku: rowSku, loc: rowLoc });
         }
       }
     });
 
-    // 4. Run the calculation for every unique item
+    // Run the calculation for every unique item
     let successCount = 0;
     uniqueItems.forEach(item => {
       const result = this.inventoryService.generateForecast(
@@ -256,8 +256,8 @@ export class DashboardComponent {
       }
     });
 
-    // 5. Update the UI
-    this.forecast = null; // Clear the single-item view to focus on the history box
+    // Update the UI
+    this.forecast = null;
     this.errorMessage = `Successfully processed ${successCount} SKUs. Scroll down to export them to Excel.`;
   }
 
@@ -280,7 +280,7 @@ export class DashboardComponent {
 
     console.log("EXCEL EXPORT TRIGGERED. Current History Array:", this.forecastHistory);
 
-    // 1. Map our history array into the exact columns you requested
+    // Map our history array into the exact columns you requested
     const exportData = this.forecastHistory.map(item => {
       
       // Format the lead time dictionary into a clean string (e.g., "30 Days: 5, 45 Days: 8")
@@ -302,14 +302,15 @@ export class DashboardComponent {
       };
     });
 
-    // 2. Convert the mapped data to an Excel worksheet
+    // Convert the mapped data to an Excel worksheet
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData);
     
-    // 3. Create a new workbook and append the worksheet
+    // Create a new workbook and append the worksheet
     const workbook: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Forecasts');
 
-    // 4. Save the file to the user's computer
+    // Save the file to the user's computer
     XLSX.writeFile(workbook, 'Inventory_Forecast_Multiple.xlsx');
   }
 }
+
