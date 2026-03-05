@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { InventoryService } from '../services/inventory.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -32,6 +32,8 @@ export class DashboardComponent {
 
   constructor(private inventoryService: InventoryService) {}
 
+  @ViewChild('fileInput') fileInput!: ElementRef;
+  
   // Handle File Upload (Replaces excel.py loading)
   onFileUpload(event: any) {
     this.errorMessage = '';
@@ -125,12 +127,24 @@ export class DashboardComponent {
           const row = rawData[i];
           if (!row || row.length === 0) continue;
 
-          // Extract the SKU string to check if this is an actual data row
+          // Extract column headers from string to check if this is an actual data row
           const cellSku = skuIdx < row.length ? String(row[skuIdx]).trim() : '';
-          
+          const cellLoc = locIdx !== -1 && locIdx < row.length ? String(row[locIdx]).trim() : '';
+
           // Skip empty rows and rows that are clearly just the header labels
-          if (!cellSku || cellSku.toLowerCase() === 'sku' || cellSku.toLowerCase() === 'item') {
+          if (
+            !cellSku 
+            || cellSku.toLowerCase() === 'sku' 
+            || cellSku.toLowerCase() === 'item'
+            || cellSku.toLowerCase().includes('monthyear')
+            || cellSku.toLowerCase().includes('annual sales')
+          ) {
              continue;
+          }
+
+          // Skip rows that do not have a location
+          if (locIdx !== -1 && !cellLoc) {
+            continue;
           }
 
           // Build a perfectly formatted object for our data processor
@@ -313,5 +327,6 @@ export class DashboardComponent {
     XLSX.writeFile(workbook, 'Inventory_Forecast_Multiple.xlsx');
   }
 }
+
 
 
