@@ -35,7 +35,7 @@ export class DataProcessor {
     const headerRow: CsvRow = {};
     allHeaders.forEach(key => headerRow[key] = '');
 
-    // 1. Identify Key Columns dynamically based on ALL headers
+    // Identify Key Columns dynamically based on ALL headers
     const colSku = this.findColumnKey(headerRow, ['sku', 'item', 'item sku']);
     const colLoc = this.findColumnKey(headerRow, ['location', 'loc', 'warehouse']);
 
@@ -44,7 +44,7 @@ export class DataProcessor {
       return null;
     }
 
-    // 2. Identify Month Columns dynamically
+    // Identify Month Columns dynamically
     const monthMap: { [key: string]: string } = {};
     const targetMonths = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 
@@ -58,7 +58,7 @@ export class DataProcessor {
       }
     });
 
-    // 3. Filter for SKU and Location
+    // Filter for SKU and Location
     const targetSku = sku.trim().toLowerCase();
     const targetLoc = location.trim().toLowerCase();
 
@@ -74,7 +74,7 @@ export class DataProcessor {
       return null;
     }
 
-    // 4. Handle Duplicates: Calculate Total Sales
+    // Handle Duplicates: Calculate Total Sales
     // We add a temporary 'calculated_total' property to sort by
     const matchesWithTotal = matches.map(row => {
       let total = 0;
@@ -91,7 +91,7 @@ export class DataProcessor {
     // Pick the winner
     const bestMatch = matchesWithTotal[0].row;
 
-    // 5. Build result object
+    // Build result object
     const result: { [key: string]: number } = {};
     
     // Map months
@@ -103,7 +103,7 @@ export class DataProcessor {
     const colSrv = this.findColumnKey(headerRow, ['srv', 'service', 'van']);
     result['srv'] = colSrv ? (parseFloat(bestMatch[colSrv]) || 0) : 0;
 
-    // Handle 'oct' vs 'octo' mismatch (legacy support for your variable naming)
+    // Handle 'oct' vs 'octo' mismatch
     if (result['oct'] !== undefined) {
       result['octo'] = result['oct'];
     }
@@ -112,3 +112,4 @@ export class DataProcessor {
     return result;
   }
 }
+
