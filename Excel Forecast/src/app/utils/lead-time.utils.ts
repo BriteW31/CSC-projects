@@ -8,7 +8,7 @@ export class LeadTimeUtils {
     const sum = leadTimes.reduce((a, b) => a + b, 0);
     // Mimicking Python's round(sum / 10). 
     // Note: Python's round() rounds to nearest even number for .5, JS rounds up.
-    // Usually Math.round is sufficient for this context.
+    // Math.round is sufficient for this context.
     return Math.round(sum / 10);
   }
 
@@ -20,13 +20,12 @@ export class LeadTimeUtils {
   static getAverageLeadTimeMonths(leadTimes: number[]): number {
     const averageDays = this.getAverageLeadTimeDays(leadTimes);
     const months = averageDays / 30.5;
-    // Round to 2 decimal places
     return Math.round(months * 100) / 100;
   }
 
   static getSDLeadTimesDays(leadTimes: number[]): number {
     if (leadTimes.length < 2) {
-      return 0; // Standard deviation is not defined for 1 or 0 values
+      return 0;
     }
 
     const average = this.getAverageLeadTimeDays(leadTimes);
@@ -35,7 +34,7 @@ export class LeadTimeUtils {
       return acc + Math.pow(lead - average, 2);
     }, 0);
 
-    const variance = sumSquaredDiff / (leadTimes.length - 1); // Sample standard deviation
+    const variance = sumSquaredDiff / (leadTimes.length - 1);
     return Math.sqrt(variance);
   }
 
@@ -44,3 +43,4 @@ export class LeadTimeUtils {
     return sd / 30.5;
   }
 }
+
