@@ -76,7 +76,7 @@ export class InventoryRemovalComponent {
       next: (response: any) => {
         this.successMessage = `Successfully processed ${this.parsedData.length} items.`;
         this.isUploading = false;
-        this.parsedData = []; // Clear out data after success
+        this.parsedData = []; 
       },
       error: (err) => {
         this.errorMessage = 'Failed to sync with the server. Check your backend connection.';
@@ -90,3 +90,4 @@ export class InventoryRemovalComponent {
     this.errorMessage = '';
   }
 }
+
