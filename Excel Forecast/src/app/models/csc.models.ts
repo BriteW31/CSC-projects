@@ -74,16 +74,18 @@ export class CSC {
   }
 
   getMeanRounded(): number {
-    return Math.round(this.getMean());
+    // return Math.round(this.getMean());
+    return Number(this.getMean().toFixed(1));
   }
 
   getMeanDaily(): number {
-    return this.getTotal() / 365;
+    return this.getTotal() / 365.25;
   }
 
   getMeanDailyRounded(): number {
-    const val = this.getMeanDaily();
-    return Math.round(val * 10) / 10;
+    // const val = this.getMeanDaily();
+    // return Math.round(val * 10) / 10;
+    return Number(this.getMeanDaily().toFixed(1));
   }
 
   getSDFromTotal(): number {
@@ -143,19 +145,21 @@ export class CSC {
 
   getReorderQuantity(): number {
     const daily = this.getMeanDaily();
-    const reorderQuantity = (daily * 365) - this.getReorderPointWithLeadTime();
-    return Math.round(reorderQuantity) + 1;
+    const reorderQuantity = daily * 365.25 - this.getReorderPointWithLeadTime();
+    return Math.round(reorderQuantity);
   }
 
   getReorderQuantityNumDays(): { [key: number]: number } {
-    const reorder = this.getReorderQuantity();
+    // scrap original concept: const reorder = this.getReorderQuantity();
+    const daily = this.getMeanDaily();
     const quantity: { [key: number]: number } = {};
     
-    // Remove duplicates, then iterate
+    // Create a Set to remove duplicates, then iterate
     const uniqueLeadTimes = Array.from(new Set(this.leadTimes));
     
     uniqueLeadTimes.forEach(lead => {
-      const leadTimeReorder = reorder * (lead / 365.25);
+      const leadTimeReorder = daily * lead;
+      // scrap original concept: const leadTimeReorder = reorder * (lead / 365.25);
       quantity[lead] = Math.round(leadTimeReorder);
     });
 
@@ -164,4 +168,3 @@ export class CSC {
     return quantity;
   }
 }
-
