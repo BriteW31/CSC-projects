@@ -11,10 +11,10 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})
 # --- SECURITY WARNING ---
 # In a production environment, NEVER hardcode these! 
 # Load them from environment variables (e.g., using python-dotenv)
-# Ask for the following stuff, maybe:
-SHOPIFY_STORE_URL = "admin.shopify.com/store/canadian-spa-company"
-SHOPIFY_ACCESS_TOKEN = "something_xxxxxxxxxxxxxxxxxxxxxxxx"
-API_VERSION = "2024-01"
+# Modify the variables below to be based on your Shopify link:
+SHOPIFY_STORE_URL = ""
+SHOPIFY_ACCESS_TOKEN = ""
+API_VERSION = ""
 
 @app.route('/api/remove-locations', methods=['POST'])
 def remove_locations():
@@ -70,3 +70,4 @@ def remove_locations():
 if __name__ == '__main__':
     # Runs the server on port 5000 by default
     app.run(debug=True, port=5000)
+
