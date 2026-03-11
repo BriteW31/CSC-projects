@@ -205,24 +205,54 @@ export class DashboardComponent {
       return; // Stop here so it doesn't run the single-SKU logic below
     }
 
-    // Call the Service
-    const result = this.inventoryService.generateForecast(
-      this.csvData,
-      this.sku,
-      this.location,
-      freshLeadTimesArray,
-      this.targetServiceRate
-    );
+// Split the SKU input string by commas and clean up the spaces
+    const skuList = this.sku
+      .split(',')
+      .map(s => s.trim())
+      .filter(s => s.length > 0);
 
-    if (result) {
-      this.forecast = result;
+    if (skuList.length === 0) {
+      this.errorMessage = 'Please enter at least one valid SKU.';
+      return;
+    }
 
-      const isDuplicate = this.forecastHistory.some(item => item.sku === this.sku && item.location === this.location);
-      if (!isDuplicate) {
-        this.forecastHistory.push({ sku: this.sku, location: this.location, data: result });
+    // Track successes and failures
+    let successCount = 0;
+    const notFoundList: string[] = [];
+
+    // Loop through every SKU in the list
+    skuList.forEach(targetSku => {
+      const result = this.inventoryService.generateForecast(
+        this.csvData,
+        targetSku,
+        this.location,
+        freshLeadTimesArray,
+        this.targetServiceRate
+      );
+
+      if (result) {
+        // Push successful hits to the history table
+        const isDuplicate = this.forecastHistory.some(
+          item => item.sku.toLowerCase() === targetSku.toLowerCase() && item.location.toLowerCase() === this.location.toLowerCase()
+        );
+        if (!isDuplicate) {
+          this.forecastHistory.push({ sku: targetSku, location: this.location, data: result });
+        }
+        successCount++;
+      } else {
+        // Track the ones that failed
+        notFoundList.push(targetSku);
+      }
+    });
+
+    // Update the UI with a smart status message
+    if (successCount > 0) {
+      this.errorMessage = `Successfully processed ${successCount} SKU(s).`;
+      if (notFoundList.length > 0) {
+        this.errorMessage += ` Could not find: ${notFoundList.join(', ')}`;
       }
     } else {
-      this.errorMessage = `Could not find SKU "${this.sku}" at Location "${this.location}"`;
+      this.errorMessage = `Could not find any of the requested SKUs at Location "${this.location}".`;
     }
   }
 
@@ -332,6 +362,7 @@ export class DashboardComponent {
     XLSX.writeFile(workbook, 'Inventory_Forecast_Multiple.xlsx');
   }
 }
+
 
 
 
