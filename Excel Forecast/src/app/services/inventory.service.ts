@@ -8,10 +8,7 @@ import { DataProcessor, CsvRow } from '../utils/data-processor.utils';
 export class InventoryService {
 
   constructor() { }
-  /**
-   * Takes raw CSV data from the user interface, processes it, 
-   * and returns a fully calculated CSC Model.
-   */
+
   generateForecast(csvData: CsvRow[], sku: string, location: string, leadTimes: number[], targetRate: number): CSC | null {
     
     // Find the specific row for this SKU/Location
@@ -31,4 +28,5 @@ export class InventoryService {
     );
   }
 }
+
 
