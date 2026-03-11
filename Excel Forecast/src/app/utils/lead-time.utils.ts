@@ -36,7 +36,8 @@ export class LeadTimeUtils {
       return acc + Math.pow(lead - average, 2);
     }, 0);
 
-    const variance = sumSquaredDiff / (leadTimes.length - 1); // Sample standard deviation
+    // Sample standard deviation
+    const variance = sumSquaredDiff / (leadTimes.length - 1);
     return Math.sqrt(variance);
   }
 
@@ -45,3 +46,4 @@ export class LeadTimeUtils {
     return sd / 30.5;
   }
 }
+
