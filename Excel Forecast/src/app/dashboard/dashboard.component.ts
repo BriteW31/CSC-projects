@@ -13,7 +13,6 @@ import * as XLSX from 'xlsx';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-  // --- Input State ---
   sku: string = '';
   location: string = '';
   targetServiceRate: number = 98;
@@ -24,7 +23,6 @@ export class DashboardComponent {
   csvData: any[] = [];
   parsedFileName: string = '';
 
-  // --- Output State ---
   forecast: CSC | null = null;
   errorMessage: string = '';
 
@@ -34,7 +32,7 @@ export class DashboardComponent {
 
   @ViewChild('fileInput') fileInput!: ElementRef;
   
-  // Handle File Upload (Replaces excel.py loading)
+  // Handle File Upload
   onFileUpload(event: any) {
     this.errorMessage = '';
     const target: DataTransfer = <DataTransfer>(event.target);
@@ -362,6 +360,7 @@ export class DashboardComponent {
     XLSX.writeFile(workbook, 'Inventory_Forecast_Multiple.xlsx');
   }
 }
+
 
 
 
