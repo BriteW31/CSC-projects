@@ -5,7 +5,7 @@ import requests
 app = Flask(__name__)
 
 # This completely resolves the browser CORS error
-# It allows your Angular app (localhost:4200) to talk to this Python app
+# It allows Angular app (localhost:4200) to talk to this Python app
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # --- SECURITY WARNING ---
@@ -70,4 +70,5 @@ def remove_locations():
 if __name__ == '__main__':
     # Runs the server on port 5000 by default
     app.run(debug=True, port=5000)
+
 
