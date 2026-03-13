@@ -1,35 +1,19 @@
-<div class="inventory-tool-container">
-  <h2>Bulk Remove Shopify Locations</h2>
-  <p>Upload your modified CSV to sever locations marked as "not stocked".</p>
-
-  <div class="upload-section">
-    <input 
-      type="file" 
-      accept=".csv" 
-      (change)="onFileSelected($event)" 
-      [disabled]="isParsing || isUploading"
-    />
-  </div>
-
-  <div *ngIf="isParsing" class="status-message">
-    Parsing CSV... please wait.
-  </div>
-
-  <div *ngIf="errorMessage" class="error-message" style="color: red;">
-    <strong>Error:</strong> {{ errorMessage }}
-  </div>
-
-  <div *ngIf="successMessage" class="success-message" style="color: green;">
-    <strong>Success:</strong> {{ successMessage }}
-  </div>
-
-  <div *ngIf="parsedData.length > 0 && !isParsing" class="action-section">
-    <p>Found <strong>{{ parsedData.length }}</strong> items to remove.</p>
+<div class="credentials-section" style="margin-bottom: 20px; padding: 15px; border: 1px solid #ccc;">
+    <h3>Shopify Credentials</h3>
     
-    <button 
-      (click)="syncWithShopify()" 
-      [disabled]="isUploading">
-      {{ isUploading ? 'Syncing with Shopify...' : 'Execute Removal' }}
-    </button>
+    <div style="margin-bottom: 10px;">
+      <label>Store URL (e.g., your-store.myshopify.com): </label><br>
+      <input type="text" [(ngModel)]="storeUrl" placeholder="store.myshopify.com" style="width: 300px;">
+    </div>
+
+    <div style="margin-bottom: 10px;">
+      <label>Admin API Access Token: </label><br>
+      <input type="password" [(ngModel)]="accessToken" placeholder="shpat_..." style="width: 300px;">
+    </div>
+
+    <div>
+      <label>API Version: </label><br>
+      <input type="text" [(ngModel)]="apiVersion" style="width: 100px;">
+    </div>
   </div>
-</div>
+  
