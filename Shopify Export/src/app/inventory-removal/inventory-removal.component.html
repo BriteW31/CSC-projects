@@ -1,19 +1,74 @@
-<div class="credentials-section" style="margin-bottom: 20px; padding: 15px; border: 1px solid #ccc;">
-    <h3>Shopify Credentials</h3>
+<div class="inventory-tool-container" style="max-width: 600px; margin: 20px auto; font-family: sans-serif;">
+  <h2>Bulk Remove Shopify Locations</h2>
+  <p>Upload your modified CSV to sever locations marked as "not stocked".</p>
+
+  <div class="credentials-section" style="margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 5px;">
+    <h3 style="margin-top: 0;">Shopify Credentials</h3>
     
     <div style="margin-bottom: 10px;">
       <label>Store URL (e.g., your-store.myshopify.com): </label><br>
-      <input type="text" [(ngModel)]="storeUrl" placeholder="store.myshopify.com" style="width: 300px;">
+      <input type="text" [(ngModel)]="storeUrl" placeholder="store.myshopify.com" style="width: 100%; padding: 5px;">
     </div>
 
     <div style="margin-bottom: 10px;">
       <label>Admin API Access Token: </label><br>
-      <input type="password" [(ngModel)]="accessToken" placeholder="shpat_..." style="width: 300px;">
+      <input type="password" [(ngModel)]="accessToken" placeholder="shpat_..." style="width: 100%; padding: 5px;">
     </div>
 
     <div>
       <label>API Version: </label><br>
-      <input type="text" [(ngModel)]="apiVersion" style="width: 100px;">
+      <input type="text" [(ngModel)]="apiVersion" style="width: 100px; padding: 5px;">
+    </div>
+
+    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;">
+      <button 
+        (click)="testConnection()" 
+        [disabled]="isTesting || !storeUrl || !accessToken"
+        style="padding: 8px 16px; cursor: pointer;">
+        {{ isTesting ? 'Testing...' : 'Test Connection' }}
+      </button>
+
+      <div *ngIf="testSuccessMessage" style="color: green; margin-top: 8px;">
+        <strong>✔ {{ testSuccessMessage }}</strong>
+      </div>
+
+      <div *ngIf="testErrorMessage" style="color: red; margin-top: 8px;">
+        <strong>✖ {{ testErrorMessage }}</strong>
+      </div>
     </div>
   </div>
-  
+
+  <div class="upload-section" style="margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 5px;">
+    <h3 style="margin-top: 0;">Upload CSV</h3>
+    <input 
+      type="file" 
+      accept=".csv" 
+      (change)="onFileSelected($event)" 
+      [disabled]="isParsing || isUploading"
+    />
+  </div>
+
+  <div *ngIf="isParsing" style="color: #666; margin-bottom: 10px;">
+    Parsing CSV... please wait.
+  </div>
+
+  <div *ngIf="errorMessage" style="color: red; margin-bottom: 10px; padding: 10px; border: 1px solid red; background-color: #fee;">
+    <strong>Error:</strong> {{ errorMessage }}
+  </div>
+
+  <div *ngIf="successMessage" style="color: green; margin-bottom: 10px; padding: 10px; border: 1px solid green; background-color: #efe;">
+    <strong>Success:</strong> {{ successMessage }}
+  </div>
+
+  <div *ngIf="parsedData.length > 0 && !isParsing" class="action-section" style="padding: 15px; background-color: #f9f9f9; border: 1px solid #ccc; border-radius: 5px;">
+    <p style="margin-top: 0;">Found <strong>{{ parsedData.length }}</strong> items to remove.</p>
+    
+    <button 
+      (click)="syncWithShopify()" 
+      [disabled]="isUploading"
+      style="padding: 10px 20px; font-weight: bold; cursor: pointer; background-color: #008060; color: white; border: none; border-radius: 3px;">
+      {{ isUploading ? 'Syncing with Shopify...' : 'Execute Removal' }}
+    </button>
+  </div>
+</div>
+
