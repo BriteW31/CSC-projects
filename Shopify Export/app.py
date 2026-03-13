@@ -4,9 +4,46 @@ import requests
 
 app = Flask(__name__)
 
-# This completely resolves the browser CORS error
-# It allows your Angular app (localhost:4200) to talk to this Python app
+
+# Allows your Angular app (localhost:4200) to reach this Python app
 CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+@app.route('/api/test-connection', methods=['POST'])
+def test_connection():
+    """
+    Tests the Shopify credentials by making a safe, read-only 
+    request to fetch the store's basic profile.
+    """
+    data = request.get_json()
+    
+    if not data or 'storeUrl' not in data or 'accessToken' not in data:
+        return jsonify({"error": "Missing credentials in request."}), 400
+
+    # Clean up the inputs just like we do for the main sync
+    store_url = data['storeUrl'].replace('https://', '').strip()
+    access_token = data['accessToken'].strip()
+    api_version = data.get('apiVersion', '2024-01').strip()
+
+    headers = {
+        "X-Shopify-Access-Token": access_token,
+        "Content-Type": "application/json"
+    }
+
+    # The safest read-only endpoint in Shopify
+    url = f"https://{store_url}/admin/api/{api_version}/shop.json"
+
+    try:
+        response = requests.get(url, headers=headers)
+        
+        if response.status_code == 200:
+            shop_data = response.json().get('shop', {})
+            store_name = shop_data.get('name', 'your store')
+            return jsonify({"message": f"Success! Connected securely to {store_name}."}), 200
+        else:
+            return jsonify({"error": f"Auth Failed ({response.status_code}): Check your token and URL."}), 401
+            
+    except Exception as e:
+        return jsonify({"error": f"Network error: Could not reach Shopify. {str(e)}"}), 500
 
 @app.route('/api/remove-locations', methods=['POST'])
 def remove_locations():
@@ -64,3 +101,4 @@ def remove_locations():
 if __name__ == '__main__':
     # Runs the server on port 5000 by default
     app.run(debug=True, port=5000)
+
