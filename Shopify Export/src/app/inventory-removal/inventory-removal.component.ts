@@ -21,12 +21,17 @@ export class InventoryRemovalComponent {
   isUploading = false;
   successMessage = '';
   errorMessage = '';
-  // NEW: Store Credentials
+
   storeUrl = '';
   accessToken = '';
-  apiVersion = '2024-01'; // Setting a sensible default
+  apiVersion = '2024-01'; 
 
-  // This will be the URL of your Python backend later
+  isTesting = false;
+  testSuccessMessage = '';
+  testErrorMessage = '';
+
+  private readonly TEST_API_URL = 'http://localhost:5000/api/test-connection';
+  
   private readonly BACKEND_API_URL = `${environment.apiUrl}/remove-locations`;
 
   constructor(
@@ -34,9 +39,35 @@ export class InventoryRemovalComponent {
     private http: HttpClient
   ) {}
 
-  /**
-   * Captures the file when the user selects it via the input.
-   */
+  testConnection(): void {
+    if (!this.storeUrl || !this.accessToken) {
+      this.testErrorMessage = 'Please enter your Store URL and Access Token first.';
+      return;
+    }
+
+    this.isTesting = true;
+    this.testSuccessMessage = '';
+    this.testErrorMessage = '';
+
+    const payload = {
+      storeUrl: this.storeUrl,
+      accessToken: this.accessToken,
+      apiVersion: this.apiVersion
+    };
+
+    this.http.post(this.TEST_API_URL, payload).subscribe({
+      next: (response: any) => {
+        this.testSuccessMessage = response.message;
+        this.isTesting = false;
+      },
+      error: (err) => {
+        // We look for our custom error message from Python, or fall back to a generic one
+        this.testErrorMessage = err.error?.error || 'Failed to connect to the server.';
+        this.isTesting = false;
+      }
+    });
+  }
+
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
@@ -84,9 +115,6 @@ export class InventoryRemovalComponent {
     });
   }
 
-  /**
-   * Passes the file to our service for Papa Parse to handle.
-   */
   private processFile(): void {
     if (!this.selectedFile) return;
     
