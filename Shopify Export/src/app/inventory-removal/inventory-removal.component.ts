@@ -39,6 +39,9 @@ export class InventoryRemovalComponent {
     private http: HttpClient
   ) {}
 
+  /*
+    Tests the connection by sending it to Python and ensuring that no errors are generated
+  */
   testConnection(): void {
     if (!this.storeUrl || !this.accessToken) {
       this.testErrorMessage = 'Please enter your Store URL and Access Token first.';
@@ -68,6 +71,9 @@ export class InventoryRemovalComponent {
     });
   }
 
+  /*
+    Takes the uploaded file and prepares to process it
+  */
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
@@ -77,6 +83,9 @@ export class InventoryRemovalComponent {
     }
   }
 
+  /*
+    Syncs the CSV file with the Shopify site
+  */
   syncWithShopify(): void {
     // Basic validation to ensure they filled out the fields
     if (!this.storeUrl || !this.accessToken) {
@@ -115,6 +124,9 @@ export class InventoryRemovalComponent {
     });
   }
 
+  /*
+    Processes the CSV File and sends it for parsing
+  */
   private processFile(): void {
     if (!this.selectedFile) return;
     
@@ -136,3 +148,4 @@ export class InventoryRemovalComponent {
     this.errorMessage = '';
   }
 }
+
