@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { ShopifyInventoryService, LocationRemovalPayload } from '../shopify-inventory.service';
 import { environment } from '../../environment/environment';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-inventory-removal',
   templateUrl: './inventory-removal.component.html',
   styleUrls: ['./inventory-removal.component.css'],
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   standalone: true
 })
 export class InventoryRemovalComponent {
@@ -20,6 +21,10 @@ export class InventoryRemovalComponent {
   isUploading = false;
   successMessage = '';
   errorMessage = '';
+  // NEW: Store Credentials
+  storeUrl = '';
+  accessToken = '';
+  apiVersion = '2024-01'; // Setting a sensible default
 
   // This will be the URL of your Python backend later
   private readonly BACKEND_API_URL = `${environment.apiUrl}/remove-locations`;
@@ -41,6 +46,44 @@ export class InventoryRemovalComponent {
     }
   }
 
+  syncWithShopify(): void {
+    // Basic validation to ensure they filled out the fields
+    if (!this.storeUrl || !this.accessToken) {
+      this.errorMessage = 'Please provide your Shopify Store URL and Access Token.';
+      return;
+    }
+
+    if (this.parsedData.length === 0) {
+      this.errorMessage = 'No valid "not stocked" items found to sync.';
+      return;
+    }
+
+    this.isUploading = true;
+    this.resetMessages();
+
+    // Package the credentials AND the items into one payload
+    const payload = {
+      credentials: {
+        storeUrl: this.storeUrl.replace('https://', '').trim(),
+        accessToken: this.accessToken.trim(),
+        apiVersion: this.apiVersion.trim()
+      },
+      items: this.parsedData
+    };
+
+    this.http.post(this.BACKEND_API_URL, payload).subscribe({
+      next: (response: any) => {
+        this.successMessage = `Successfully processed ${this.parsedData.length} items.`;
+        this.isUploading = false;
+        this.parsedData = []; // Clear out data after success
+      },
+      error: (err) => {
+        this.errorMessage = 'Failed to sync with the server. Check your backend connection.';
+        this.isUploading = false;
+      }
+    });
+  }
+
   /**
    * Passes the file to our service for Papa Parse to handle.
    */
@@ -60,35 +103,8 @@ export class InventoryRemovalComponent {
     });
   }
 
-  /**
-   * Sends the clean, extracted array to the Python backend.
-   */
-  syncWithShopify(): void {
-    if (this.parsedData.length === 0) {
-      this.errorMessage = 'No valid "not stocked" items found to sync.';
-      return;
-    }
-
-    this.isUploading = true;
-    this.resetMessages();
-
-    this.http.post(this.BACKEND_API_URL, { items: this.parsedData }).subscribe({
-      next: (response: any) => {
-        this.successMessage = `Successfully processed ${this.parsedData.length} items.`;
-        this.isUploading = false;
-        this.parsedData = []; 
-      },
-      error: (err) => {
-        this.errorMessage = 'Failed to sync with the server. Check your backend connection.';
-        this.isUploading = false;
-      }
-    });
-  }
-
   private resetMessages(): void {
     this.successMessage = '';
     this.errorMessage = '';
   }
 }
-
-
