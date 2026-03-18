@@ -74,6 +74,7 @@ export class CSC {
   }
 
   getMeanRounded(): number {
+    // Replace math.round with toFixed()
     // return Math.round(this.getMean());
     return Number(this.getMean().toFixed(1));
   }
@@ -83,6 +84,7 @@ export class CSC {
   }
 
   getMeanDailyRounded(): number {
+    // Replace math.round with toFixed()
     // const val = this.getMeanDaily();
     // return Math.round(val * 10) / 10;
     return Number(this.getMeanDaily().toFixed(1));
