@@ -331,6 +331,7 @@ export class DashboardComponent {
     const exportData = this.forecastHistory.map(item => {
       
       /*
+      // Replace this version of mapping with a newer one
       const leadTimeDict = item.data.getReorderQuantityNumDays();
       const leadTimeStr = Object.entries(leadTimeDict)
         .map(([days, qty]) => `${days} Days: ${qty}`)
