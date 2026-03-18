@@ -85,7 +85,7 @@ export class DataProcessor {
       return { row, total };
     });
 
-    // Sort by total descending (Highest sales first)
+    // Sort by total descending
     matchesWithTotal.sort((a, b) => b.total - a.total);
 
     // Pick the winner
