@@ -123,6 +123,7 @@ export class CSC {
     const sdLeadMonth = this.getSDFromLeadTimeMonths();
 
     // Python: math.sqrt((avgLead * (sdTotal^2)) + (mean * sdLead)^2)
+    // Convert Python to TypeScript
     const part1 = avgLeadMonth * Math.pow(sdTotal, 2);
     const part2 = Math.pow(mean * sdLeadMonth, 2);
     
@@ -152,7 +153,7 @@ export class CSC {
   }
 
   getReorderQuantityNumDays(): { [key: number]: number } {
-    // scrap original concept: const reorder = this.getReorderQuantity();
+    // Scrap original concept: const reorder = this.getReorderQuantity();
     const daily = this.getMeanDaily();
     const quantity: { [key: number]: number } = {};
     
