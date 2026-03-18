@@ -153,7 +153,7 @@ export class CSC {
   }
 
   getReorderQuantityNumDays(): { [key: number]: number } {
-    // Scrap original concept: const reorder = this.getReorderQuantity();
+    // Replace: const reorder = this.getReorderQuantity();
     const daily = this.getMeanDaily();
     const quantity: { [key: number]: number } = {};
     
@@ -162,7 +162,7 @@ export class CSC {
     
     uniqueLeadTimes.forEach(lead => {
       const leadTimeReorder = daily * lead;
-      // Scrap original concept: const leadTimeReorder = reorder * (lead / 365.25);
+      // Replace: const leadTimeReorder = reorder * (lead / 365.25);
       quantity[lead] = Math.round(leadTimeReorder);
     });
 
