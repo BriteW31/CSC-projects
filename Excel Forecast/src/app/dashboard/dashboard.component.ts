@@ -327,15 +327,15 @@ export class DashboardComponent {
 
     console.log("EXCEL EXPORT TRIGGERED. Current History Array:", this.forecastHistory);
 
-    // Map our history array into the exact columns you requested
+    // Map our history array into columns
     const exportData = this.forecastHistory.map(item => {
       
-      // Format the lead time dictionary into a clean string (e.g., "30 Days: 5, 45 Days: 8")
+      /*
       const leadTimeDict = item.data.getReorderQuantityNumDays();
       const leadTimeStr = Object.entries(leadTimeDict)
         .map(([days, qty]) => `${days} Days: ${qty}`)
         .join(' | ');
-
+      
       return {
         'SKU': item.sku,
         'Location': item.location,
@@ -347,6 +347,29 @@ export class DashboardComponent {
         'Annual Reorder Quantity': item.data.getReorderQuantity(),
         'Reorder Quantities (Lead Time Days)': leadTimeStr
       };
+      */
+
+      // Create the base row with all your standard metrics
+      const rowData: any = {
+        'SKU': item.sku,
+        'Location': item.location,
+        'Total Sales': item.data.getTotal(),
+        'Average Monthly Sales': item.data.getMeanRounded(),
+        'Average Daily Sales': item.data.getMeanDailyRounded(),
+        'Safety Stock Quantity': item.data.getSafetyStockWithLeadTimeRounded(),
+        'Reorder Point': item.data.getReorderPointWithLeadTime(),
+        'Annual Reorder Quantity': item.data.getReorderQuantity()
+      };
+
+      // Generate a new column for each lead time
+      const leadTimeDict = item.data.getReorderQuantityNumDays();
+      
+      Object.entries(leadTimeDict).forEach(([days, qty]) => {
+        // Creates column headers like "30 Days Reorder Quantity"
+        rowData[`${days} Days Reorder Quantity`] = qty; 
+      });
+
+      return rowData;
     });
 
     // Convert the mapped data to an Excel worksheet
