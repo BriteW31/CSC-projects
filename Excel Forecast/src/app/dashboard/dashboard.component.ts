@@ -359,6 +359,7 @@ export class DashboardComponent {
         'Average Daily Sales': item.data.getMeanDailyRounded(),
         'Safety Stock Quantity': item.data.getSafetyStockWithLeadTimeRounded(),
         'Reorder Point': item.data.getReorderPointWithLeadTime()
+        // Annual Reorder Quantity may not be needed, uncomment line below if you need it
         // 'Annual Reorder Quantity': item.data.getReorderQuantity()
       };
 
