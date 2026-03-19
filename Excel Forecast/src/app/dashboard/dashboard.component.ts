@@ -358,8 +358,8 @@ export class DashboardComponent {
         'Average Monthly Sales': item.data.getMeanRounded(),
         'Average Daily Sales': item.data.getMeanDailyRounded(),
         'Safety Stock Quantity': item.data.getSafetyStockWithLeadTimeRounded(),
-        'Reorder Point': item.data.getReorderPointWithLeadTime(),
-        'Annual Reorder Quantity': item.data.getReorderQuantity()
+        'Reorder Point': item.data.getReorderPointWithLeadTime()
+        // 'Annual Reorder Quantity': item.data.getReorderQuantity()
       };
 
       // Generate a new column for each lead time
