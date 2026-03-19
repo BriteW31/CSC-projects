@@ -66,7 +66,7 @@ export class CSC {
 
   getTotal(): number {
     return (this.jan + this.feb + this.mar + this.apr + this.may + this.jun +
-            this.jul + this.aug + this.sep + this.octo + this.nov + this.dec + this.srv);
+            this.jul + this.aug + this.sep + this.octo + this.nov + this.dec);
   }
 
   getMean(): number {
@@ -76,7 +76,7 @@ export class CSC {
   getMeanRounded(): number {
     // Replace math.round with toFixed()
     // return Math.round(this.getMean());
-    return Number(this.getMean().toFixed(1));
+    return Number(this.getMean().toFixed(2));
   }
 
   getMeanDaily(): number {
@@ -87,7 +87,7 @@ export class CSC {
     // Replace math.round with toFixed()
     // const val = this.getMeanDaily();
     // return Math.round(val * 10) / 10;
-    return Number(this.getMeanDaily().toFixed(1));
+    return Number(this.getMeanDaily().toFixed(2));
   }
 
   getSDFromTotal(): number {
