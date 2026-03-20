@@ -64,9 +64,14 @@ export class DataProcessor {
 
     // Filter rows
     let matches = data.filter(row => {
-      const rowSku = String(row[colSku]).trim().toLowerCase();
-      const rowLoc = String(row[colLoc]).trim().toLowerCase();
-      return rowSku === targetSku && rowLoc === targetLoc;
+      const rowSku = String(row[colSku] || '').trim().toLowerCase();
+      const rowLoc = String(row[colLoc] || '').trim().toLowerCase();
+      
+      const skuMatch = rowSku === targetSku || rowSku.includes(targetSku);
+      const locationMatch = rowLoc === targetLoc;
+
+      // Both conditions must pass for the row to be kept
+      return skuMatch && locationMatch;
     });
 
     if (matches.length === 0) {
