@@ -36,7 +36,7 @@ export class DataProcessor {
     allHeaders.forEach(key => headerRow[key] = '');
 
     // Identify Key Columns dynamically based on ALL headers
-    const colSku = this.findColumnKey(headerRow, ['sku', 'item', 'item sku']);
+    const colSku = this.findColumnKey(headerRow, ['sku', 'item', 'item sku', 'skuname']);
     const colLoc = this.findColumnKey(headerRow, ['location', 'loc', 'warehouse']);
 
     if (!colSku || !colLoc) {
