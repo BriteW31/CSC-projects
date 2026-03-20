@@ -1,5 +1,7 @@
 This folder takes the Excel Inventory Forecast in Python and upgrades it into an app from Angular.
 
+Commented code refers to past versions of the program. It has been improved and replaced.
+
 This can be made into a PWA by first installing Angular's PWA program and the Global Server, then running ng build.
 
 PWA install: ng add @angular/pwa
