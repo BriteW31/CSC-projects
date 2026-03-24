@@ -11,4 +11,6 @@ Run app: http-server -c-1 dist/my-pwa-app
 Note: the Excel file input is slightly less strict compared to Python. You can add additional headers (up to 10 headers) to your Excel file. 
 Additionally, so long as a sheet contains the latest year number, you can use any name for that sheet.
 
-Example Excel files have been added. More updates will be added to fix the exported Excel format. Any sections that have been commented are previous, older versions of code which have been replaced. Commented code will be removed once the final program is complete.
+Example Excel files have been added. More updates will be added to fix the exported Excel format. 
+Any sections that have been commented are previous, older versions of code which have been replaced. 
+Commented code will be removed once the final program is complete.
