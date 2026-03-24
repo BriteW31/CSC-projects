@@ -51,7 +51,8 @@ export class DashboardComponent {
       try {
         const arrayBuffer = e.target.result;
         const workbook: XLSX.WorkBook = XLSX.read(arrayBuffer, { type: 'array' });
-        
+
+        /* Upgrade the original scanner to consider several missing factors, such as names of sheets having the same year in them
         // Find latest year sheet
         const sheetNames = workbook.SheetNames;
         let targetSheetName = sheetNames[0];
@@ -77,7 +78,31 @@ export class DashboardComponent {
           targetSheetName = sheetNames[sheetNames.length - 1]; 
           console.log(`No years found. Falling back to last sheet: "${targetSheetName}"`);
         }
+        */
 
+        // --- THE UPGRADED SMART TAB SCANNER ---
+        const sheetNames = workbook.SheetNames;
+        let targetSheetName = sheetNames[0]; // Fallback to the first tab
+
+        // Loop through every tab in the Excel file
+        for (const sheetName of sheetNames) {
+          const tempSheet = workbook.Sheets[sheetName];
+          
+          const previewData: any[][] = XLSX.utils.sheet_to_json(tempSheet, { header: 1 });
+          const firstFewRows = previewData.slice(0, 10);
+          
+          const previewText = firstFewRows.map(row => row.join(',').toLowerCase()).join(' | ');
+
+          const hasSkuColumn = previewText.includes('sku') || previewText.includes('skuname') || previewText.includes('item');
+          const hasLocationColumn = previewText.includes('location') || previewText.includes('loc') || previewText.includes('warehouse');
+
+          if (hasSkuColumn && hasLocationColumn) {
+            targetSheetName = sheetName;
+            console.log(`Securely locked onto data tab: "${sheetName}"`);
+            break; 
+          }
+        }
+        
         const worksheet: XLSX.WorkSheet = workbook.Sheets[targetSheetName];
         
         // Load the sheet as a 2D Array of strings, instead of objects. 
