@@ -58,7 +58,7 @@ Rounding from csc.models.ts:
     // return Math.round(val * 10) / 10;
 
 Reorder Quantities:
-    
+    // Replace: const reorder = this.getReorderQuantity();
     // Replace: const leadTimeReorder = reorder * (lead / 365.25);
 
 
