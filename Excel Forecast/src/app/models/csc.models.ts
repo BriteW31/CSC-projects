@@ -149,12 +149,14 @@ export class CSC {
   }
 
   getReorderQuantity(): number {
+    // Annual Reorder Quantity
     const daily = this.getMeanDaily();
     const reorderQuantity = daily * 365.25 - this.getReorderPointWithLeadTime();
     return Math.round(reorderQuantity);
   }
 
   getReorderQuantityNumDays(): { [key: number]: number } {
+    // Reorder Quantity, based on Lead Times
     const daily = this.getMeanDaily();
     const quantity: { [key: number]: number } = {};
     
