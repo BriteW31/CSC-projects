@@ -27,3 +27,24 @@ Original Scanner Code:
         }
         */
 
+Original Formatting for Export:
+      /*
+      // Replace this version of mapping with a newer one
+      const leadTimeDict = item.data.getReorderQuantityNumDays();
+      const leadTimeStr = Object.entries(leadTimeDict)
+        .map(([days, qty]) => `${days} Days: ${qty}`)
+        .join(' | ');
+      
+      return {
+        'SKU': item.sku,
+        'Location': item.location,
+        'Total Sales': item.data.getTotal(),
+        'Average Monthly Sales': item.data.getMeanRounded(),
+        'Average Daily Sales': item.data.getMeanDailyRounded(),
+        'Safety Stock Quantity': item.data.getSafetyStockWithLeadTimeRounded(),
+        'Reorder Point': item.data.getReorderPointWithLeadTime(),
+        'Annual Reorder Quantity': item.data.getReorderQuantity(),
+        'Reorder Quantities (Lead Time Days)': leadTimeStr
+      };
+      */
+      
