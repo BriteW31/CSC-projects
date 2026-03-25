@@ -52,35 +52,6 @@ export class DashboardComponent {
         const arrayBuffer = e.target.result;
         const workbook: XLSX.WorkBook = XLSX.read(arrayBuffer, { type: 'array' });
 
-        /* Upgrade the original scanner to consider several missing factors, such as names of sheets having the same year in them
-        // Find latest year sheet
-        const sheetNames = workbook.SheetNames;
-        let targetSheetName = sheetNames[0];
-
-        // Map through sheets and attempt to extract a 4-digit year
-        const sheetsWithYears = sheetNames
-          .map(name => {
-            // Regex to find any 4-digit sequence (e.g., '2025' inside 'Year 2025 Final')
-            const match = name.match(/\d{4}/); 
-            return {
-              originalName: name,
-              year: match ? parseInt(match[0], 10) : null
-            };
-          })
-          .filter(sheet => sheet.year !== null) // Throw out sheets with no year
-          .sort((a, b) => b.year! - a.year!);   // Sort descending (highest year first)
-
-        // Pick the winner or use the fallback
-        if (sheetsWithYears.length > 0) {
-          targetSheetName = sheetsWithYears[0].originalName;
-          console.log(`Extracted year ${sheetsWithYears[0].year} from sheet "${targetSheetName}"`);
-        } else {
-          targetSheetName = sheetNames[sheetNames.length - 1]; 
-          console.log(`No years found. Falling back to last sheet: "${targetSheetName}"`);
-        }
-        */
-
-        // --- THE UPGRADED SMART TAB SCANNER ---
         const sheetNames = workbook.SheetNames;
         let targetSheetName = sheetNames[0]; // Fallback to the first tab
 
