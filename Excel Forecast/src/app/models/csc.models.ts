@@ -157,7 +157,6 @@ export class CSC {
     
     uniqueLeadTimes.forEach(lead => {
       const leadTimeReorder = daily * lead;
-      // Replace: const leadTimeReorder = reorder * (lead / 365.25);
       quantity[lead] = Math.round(leadTimeReorder);
     });
 
