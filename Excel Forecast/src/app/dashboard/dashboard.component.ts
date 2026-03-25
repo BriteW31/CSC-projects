@@ -142,8 +142,13 @@ export class DashboardComponent {
 
           // Extract column headers from string to check if this is an actual data row
           const cellSku = skuIdx < row.length ? String(row[skuIdx]).trim() : '';
-          const cellLoc = locIdx !== -1 && locIdx < row.length ? String(row[locIdx]).trim() : '';
+          let cellLoc = locIdx !== -1 && locIdx < row.length ? String(row[locIdx]).trim() : '';
 
+          // Default location is OAKVILLE
+          if (!cellLoc) {
+            cellLoc = 'OAKVILLE';
+          }
+          
           // Skip empty rows and rows that are clearly just the header labels
           if (
             !cellSku 
@@ -168,7 +173,9 @@ export class DashboardComponent {
           // Build a perfectly formatted object for our data processor
           const obj: any = {};
           obj['sku'] = cellSku;
-          if (locIdx !== -1 && locIdx < row.length) obj['location'] = row[locIdx];
+          
+          // Location will be the extracted one, or our Oakville default
+          obj['location'] = cellLoc; 
           if (srvIdx !== -1 && srvIdx < row.length) obj['srv'] = row[srvIdx];
           
           months.forEach(m => {
