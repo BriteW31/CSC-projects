@@ -113,6 +113,7 @@ export class CSC {
   }
 
   getSafetyStock(): number {
+    // Safety Stock Formula
     return this.getZScoreValue() * this.getSDFromTotal() * Math.sqrt(this.getAverageLeadTimeMonths());
   }
 
@@ -121,6 +122,7 @@ export class CSC {
   }
 
   getSafetyStockWithLeadTime(): number {
+    // Safety Stock Formula with Lead Time Factor
     const avgLeadMonth = this.getAverageLeadTimeMonths();
     const sdTotal = this.getSDFromTotal();
     const mean = this.getMean();
@@ -137,12 +139,14 @@ export class CSC {
   }
 
   getReorderPoint(): number {
+    // Reorder Point Formula
     const leadTime = this.getMean() * this.getAverageLeadTimeMonths();
     const reorder = this.getSafetyStock() + leadTime;
     return Math.ceil(reorder);
   }
 
   getReorderPointWithLeadTime(): number {
+    // Reorder Point Formula with Lead Time Factor
     const leadTime = this.getMeanDaily() * this.getAverageLeadTimeDays();
     const reorder = this.getSafetyStockWithLeadTime() + leadTime;
     return Math.ceil(reorder);
@@ -164,6 +168,7 @@ export class CSC {
     const uniqueLeadTimes = Array.from(new Set(this.leadTimes));
     
     uniqueLeadTimes.forEach(lead => {
+      // Reorder Quantity Formula based on Daily Average Sales
       const leadTimeReorder = daily * lead;
       quantity[lead] = Math.round(leadTimeReorder);
     });
