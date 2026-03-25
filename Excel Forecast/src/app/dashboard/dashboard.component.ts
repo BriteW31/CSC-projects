@@ -222,7 +222,7 @@ export class DashboardComponent {
 
     if (this.sku.trim().toUpperCase() === 'ALL') {
       this.processAllSkus(freshLeadTimesArray);
-      return; // Stop here so it doesn't run the single-SKU logic below
+      return; // Stop to prevent single-SKU logic
     }
 
 // Split the SKU input string by commas and clean up the spaces
