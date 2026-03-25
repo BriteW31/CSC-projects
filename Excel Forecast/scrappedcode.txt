@@ -53,5 +53,8 @@ Rounding from csc.models.ts:
     // Replace math.round with toFixed()
     // return Math.round(this.getMean());
 
+    // Replace math.round with toFixed()
+    // const val = this.getMeanDaily();
+    // return Math.round(val * 10) / 10;
 
 
