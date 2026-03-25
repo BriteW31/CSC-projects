@@ -11,6 +11,7 @@ export class CSC {
   ) {}
 
   getAverageLeadTimeDays(): number {
+    // Average Lead Time in Days
     return LeadTimeUtils.getAverageLeadTimeDays(this.leadTimes);
   }
 
@@ -19,10 +20,12 @@ export class CSC {
   }
 
   getMaxLeadTimeDays(): number {
+    // Maximum Lead Time in Days
     return LeadTimeUtils.getMaxLeadTimeDays(this.leadTimes);
   }
 
   getAverageLeadTimeMonths(): number {
+    // Average Lead Time in Months
     return LeadTimeUtils.getAverageLeadTimeMonths(this.leadTimes);
   }
 
@@ -31,10 +34,12 @@ export class CSC {
   }
 
   getMaxLeadTimeMonths(): number {
+    // Maximum Lead Time in Months
     return LeadTimeUtils.getMaxLeadTimeMonths(this.leadTimes);
   }
 
   getSDFromLeadTimeDays(): number {
+    // Standard Deviation Lead Time in Days
     return LeadTimeUtils.getSDLeadTimesDays(this.leadTimes);
   }
 
@@ -44,6 +49,7 @@ export class CSC {
   }
 
   getSDFromLeadTimeMonths(): number {
+    // Standard Deviation Lead Time in Months
     return LeadTimeUtils.getSDLeadTimesMonths(this.leadTimes);
   }
 
@@ -70,6 +76,7 @@ export class CSC {
   }
 
   getMean(): number {
+    // Average Monthly Sales
     return this.getTotal() / 12;
   }
 
@@ -78,6 +85,7 @@ export class CSC {
   }
 
   getMeanDaily(): number {
+    // Average Daily Sales
     return this.getTotal() / 365.25;
   }
 
@@ -86,6 +94,7 @@ export class CSC {
   }
 
   getSDFromTotal(): number {
+    // Standard Deviation in Sales
     const mean = this.getMean();
     const months = [
       this.jan, this.feb, this.mar, this.apr, this.may, this.jun,
@@ -117,8 +126,6 @@ export class CSC {
     const mean = this.getMean();
     const sdLeadMonth = this.getSDFromLeadTimeMonths();
 
-    // Python: math.sqrt((avgLead * (sdTotal^2)) + (mean * sdLead)^2)
-    // Convert Python to TypeScript
     const part1 = avgLeadMonth * Math.pow(sdTotal, 2);
     const part2 = Math.pow(mean * sdLeadMonth, 2);
     
