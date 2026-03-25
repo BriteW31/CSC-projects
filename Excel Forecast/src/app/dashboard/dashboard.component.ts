@@ -149,7 +149,7 @@ export class DashboardComponent {
             cellLoc = 'OAKVILLE';
           }
           
-          // Skip empty rows and rows that are clearly just the header labels
+          // Skip header labels
           if (
             !cellSku 
             || cellSku.toLowerCase() === 'sku' 
@@ -170,7 +170,7 @@ export class DashboardComponent {
             continue;
           }
 
-          // Build a perfectly formatted object for our data processor
+          // Build object for data processor
           const obj: any = {};
           obj['sku'] = cellSku;
           
