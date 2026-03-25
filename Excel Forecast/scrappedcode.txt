@@ -61,4 +61,8 @@ Reorder Quantities:
     // Replace: const reorder = this.getReorderQuantity();
     // Replace: const leadTimeReorder = reorder * (lead / 365.25);
 
-
+Original Location Logic:
+          const obj: any = {};
+          obj['sku'] = cellSku;
+          if (locIdx !== -1 && locIdx < row.length) obj['location'] = row[locIdx];
+          if (srvIdx !== -1 && srvIdx < row.length) obj['srv'] = row[srvIdx];
