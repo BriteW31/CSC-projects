@@ -148,7 +148,6 @@ export class CSC {
   }
 
   getReorderQuantityNumDays(): { [key: number]: number } {
-    // Replace: const reorder = this.getReorderQuantity();
     const daily = this.getMeanDaily();
     const quantity: { [key: number]: number } = {};
     
