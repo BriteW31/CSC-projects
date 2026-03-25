@@ -12,6 +12,7 @@ import * as XLSX from 'xlsx';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
+  
 export class DashboardComponent {
   sku: string = '';
   location: string = '';
