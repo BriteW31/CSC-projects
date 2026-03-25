@@ -132,10 +132,28 @@ export class DashboardComponent {
         const locIdx = findColIdx(['location', 'loc', 'warehouse']);
         const srvIdx = findColIdx(['srv', 'service', 'van']);
 
+        // Automatically grabs the current real-world year (e.g., 2026)
+        const currentYear = new Date().getFullYear(); 
+        
+        // Target the last completed year for the forecast (e.g., 2025)
+        const targetYear = currentYear - 1;           
+        
+        // Trim the years
+        const targetYearStr = targetYear.toString().slice(-2); 
+        const currentYearStr = currentYear.toString().slice(-2);
+
         const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
         const monthIndices: { [key: string]: number } = {};
+
+        // Get the right index by target year
         months.forEach(m => {
-          monthIndices[m] = findColIdx([m, m + '.', m + 'uary', m + 'ruary', m + 'ch', m + 'il', m + 'e', m + 'y', m + 'ust', m + 'ember', m + 'ober']);
+          monthIndices[m] = findColIdx([
+            `${m}-${targetYearStr}`,
+            `${m} ${targetYear}`,
+            `${m}-${currentYearStr}`,
+            `${m}-${targetYear}`,
+            m
+          ]);
         });
 
         if (skuIdx === -1) {
