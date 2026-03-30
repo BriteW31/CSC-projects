@@ -12,5 +12,5 @@ Note: the Excel file input is slightly less strict compared to Python. You can a
 Additionally, so long as a sheet contains the latest year number, you can use any name for that sheet.
 
 Example Excel files have been added. More updates will be added to fix the exported Excel format. 
-Any sections that have been commented are previous, older versions of code which have been replaced. 
+Older versions of code are found in the scrappedcode.txt file, these lines have been replaced by better versions.
 Commented code will be removed once the final program is complete.
