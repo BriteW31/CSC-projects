@@ -1,0 +1,4 @@
+Idea: Dynamic Data Reading
+- Enables app to read the most recent 12 months of data, instead of a strict year worth of data
+- Build a toggle which toggles either dynamic reading or strict reading
+
