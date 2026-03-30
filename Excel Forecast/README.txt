@@ -13,4 +13,5 @@ Additionally, so long as a sheet contains the latest year number, you can use an
 
 Example Excel files have been added. More updates will be added to fix the exported Excel format. 
 Older versions of code are found in the scrappedcode.txt file, these lines have been replaced by better versions.
+Possible ideas to add to the app will be placed in ideas.txt.
 Commented code will be removed once the final program is complete.
