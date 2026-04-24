@@ -8,6 +8,13 @@ app = Flask(__name__)
 # Allows your Angular app (localhost:4200) to reach this Python app
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
+@app.route('/', methods=['GET'])
+def health_check():
+    """
+    A simple endpoint for UptimeRobot to ping to verify the server is alive.
+    """
+    return "Backend proxy is awake and running!", 200
+
 @app.route('/api/test-connection', methods=['POST'])
 def test_connection():
     """
